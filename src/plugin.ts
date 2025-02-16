@@ -37,7 +37,7 @@ export const TemplateInputPlugin: InputBindingPlugin<
 	type: 'input',
 
 	accept(exValue: unknown, params: Record<string, unknown>) {
-		if (params.view !== 'search-list' && typeof exValue !== 'string')
+		if (params.view !== 'search-list' || typeof exValue !== 'string')
 			return null;
 
 		// Return a typed value and params to accept the user input
