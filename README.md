@@ -1,33 +1,35 @@
 # Tweakpane plugin Search list
 
 
-![version](https://badge.fury.io/js/tweakpane-plugin-search-list.svg)
+![version](https://badge.fury.io/js/tweakpane4-search-list-plugin.svg)
 
 This is a plugin for [Tweakpane][tweakpane].
 
 add searchable select list for tweakpane.
 
-**required version `tweakpane@3.x`**
+**required version `tweakpane@4.x`**
 
 ### Install
 
 ```bash
-npm i tweakpane-plugin-search-list
+npm i tweakpane4-search-list-plugin
 # or
-yarn add tweakpane-plugin-search-list
+yarn add tweakpane4-search-list-plugin
+# or
+bun i tweakpane4-search-list-plugin
 ```
 
 ### Usage
 
 ```js
 import { Pane } from 'tweakpane';
-import TweakpaneSearchListPlugin from 'tweakpane-plugin-search-list';
+import TweakpaneSearchListPlugin from 'tweakpane4-search-list-plugin';
 
 const pane = new Pane();
 pane.registerPlugin(TweakpaneSearchListPlugin);
 
 const data = { language: 'JavaScript' };
-pane.addInput(data, 'language', {
+pane.addBinding(data, 'language', {
   // use search-list
   view: 'search-list',
   options: {
@@ -48,7 +50,7 @@ pane.addInput(data, 'language', {
 ### Options
 
 ```js
-pane.addInput(data, 'field', {
+pane.addBinding(data, 'field', {
   view: 'search-list',
   options: {
     // ...

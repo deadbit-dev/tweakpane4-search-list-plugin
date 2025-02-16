@@ -1,3 +1,6 @@
-import {TemplateInputPlugin} from './plugin';
+import type { TpPlugin } from 'tweakpane';
+import { TemplateInputPlugin } from './plugin.js';
 
-export default {plugin: TemplateInputPlugin};
+export const id = 'input-template';
+export const css = '__css__';
+export const plugins: TpPlugin[] = [TemplateInputPlugin];

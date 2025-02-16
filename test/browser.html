@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title></title>
 </head>
+
 <body>
-	<script src="../node_modules/tweakpane/dist/tweakpane.js"></script>
-	<script src="../dist/tweakpane-plugin-search-list.min.js"></script>
-	<script>
+	<script type="module">
+		import * as Tweakpane from '../node_modules/tweakpane/dist/tweakpane.js';
+		import * as TweakpaneSearchListPlugin from '../dist/tweakpane4-search-list-plugin.js';
+
+		console.log(Tweakpane);
+
 		const pane = new Tweakpane.Pane();
 		// Register plugin
 		pane.registerPlugin(TweakpaneSearchListPlugin);
 
-		pane.addInput({test: 'test'}, 'test', {
+		pane.addBinding({ test: 'test' }, 'test', {
 			view: 'search-list',
 			options: {
-				a: 'test',
-				b: 'test-2',
-				c: 'test-3',
-				d: 'test-4',
-				e: 'test-5',
-				f: 'test-6',
-				g: 'test-7',
-				h: 'test-8',
-				i: 'test-9'
+				test: 'test',
+				test_2: 'test-2',
+				test_3: 'test-3',
+				test_4: 'test-4',
+				test_5: 'test-5',
+				test_6: 'test-6'
 			}
 		}).on('change', (ev) => {
 			console.log(ev.value);
@@ -32,4 +34,11 @@
 		window.pane = pane;
 	</script>
 </body>
+
+<style>
+	body {
+		background-color: rgb(40, 36, 41);
+	}
+</style>
+
 </html>

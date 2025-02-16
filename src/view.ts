@@ -1,8 +1,8 @@
-import flip from '@popperjs/core/lib/modifiers/flip';
-import {createPopper, Instance} from '@popperjs/core/lib/popper-lite';
-import {ClassName, TextView, Value, View} from '@tweakpane/core';
+import flip from '@popperjs/core/lib/modifiers/flip.js';
+import { createPopper, Instance } from '@popperjs/core/lib/popper-lite.js';
+import { ClassName, TextView, Value, View } from '@tweakpane/core';
 
-import {Option, PluginConfig} from './types';
+import { Option, PluginConfig } from './types.js';
 
 // Create a class name generator from the view name
 const className = ClassName('search-list');

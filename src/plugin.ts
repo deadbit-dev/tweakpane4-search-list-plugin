@@ -3,13 +3,14 @@ import {
 	CompositeConstraint,
 	createListConstraint,
 	createValue,
+	createPlugin,
 	InputBindingPlugin,
 	StringInputParams,
 	ValueMap,
 } from '@tweakpane/core';
 
-import {PluginController} from './controller';
-import {Option} from './types';
+import { PluginController } from './controller.js';
+import { Option } from './types.js';
 
 interface PluginInputParams extends StringInputParams {
 	noDataText?: string;
@@ -27,17 +28,13 @@ export const TemplateInputPlugin: InputBindingPlugin<
 	string,
 	string,
 	PluginInputParams
-> = {
+> = createPlugin({
 	id: 'input-template',
 
 	// type: The plugin type.
 	// - 'input': Input binding
 	// - 'monitor': Monitor binding
 	type: 'input',
-
-	// This plugin template injects a compiled CSS by @rollup/plugin-replace
-	// See rollup.config.js for details
-	css: '__css__',
 
 	accept(exValue: unknown, params: Record<string, unknown>) {
 		if (params.view !== 'search-list' && typeof exValue !== 'string')
@@ -100,4 +97,4 @@ export const TemplateInputPlugin: InputBindingPlugin<
 			viewProps: args.viewProps,
 		});
 	},
-};
+});

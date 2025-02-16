@@ -1,8 +1,8 @@
-import {Controller, TextView, Value, ViewProps} from '@tweakpane/core';
+import { Controller, TextView, Value, ViewProps } from '@tweakpane/core';
 import debounce from 'lodash.debounce';
 
-import {Option, PluginConfig} from './types';
-import {PluginView} from './view';
+import { Option, PluginConfig } from './types.js';
+import { PluginView } from './view.js';
 
 // Custom controller class should implement `Controller` interface
 export class PluginController implements Controller<PluginView> {
