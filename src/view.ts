@@ -42,10 +42,7 @@ export class PluginView implements View {
 		this.value.emitter.on('change', this.onValueChange_.bind(this));
 
 		this.textView = config.textView;
-		this.textView.inputElement.addEventListener(
-			'click',
-			this.onTextInputClick.bind(this),
-		);
+		this.textView.inputElement.addEventListener('click', this.onTextInputClick.bind(this));
 		this.textView.inputElement.addEventListener('input', config.onTextInput);
 		this.element.appendChild(this.textView.element);
 
@@ -99,7 +96,7 @@ export class PluginView implements View {
 
 	private onDocClick(e: MouseEvent): void {
 		if (e.target && e.target instanceof HTMLElement) {
-			if (e.target.contains(this.element)) {
+			if (!e.target.contains(this.textView.inputElement)) {
 				this.hideSelectOptionsBox();
 			}
 		}
