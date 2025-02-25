@@ -15,6 +15,7 @@
 
 		&[data-show] {
 			display: block;
+			z-index: 2;
 		}
 
 		background-color: var(--tp-plugin-select-box-bg-color, rgb(58, 59, 64));
@@ -27,9 +28,6 @@
 		max-height: 240px;
 		overflow: auto;
 		background-color: var(--tp-plugin-select-box-bg-color, rgb(58, 59, 64));
-
-
-		z-index: 2;
 
 		.no-data {
 			cursor: initial;
@@ -53,8 +51,4 @@
 
 		color: var(--button-foreground-color);
 	}
-}
-
-.tp-txtv {
-	position: unset;
 }
