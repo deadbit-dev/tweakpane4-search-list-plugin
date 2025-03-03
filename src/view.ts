@@ -86,7 +86,7 @@ export class PluginView implements View {
 		this.element.appendChild(selectOptionsBoxEl);
 
 		// Apply the initial value
-		this.update();
+		this.refresh();
 		this.textView.refresh();
 
 		config.viewProps.handleDispose(() => {
@@ -135,11 +135,13 @@ export class PluginView implements View {
 		});
 	}
 
-	public update(): void {
+	public refresh(): void {
 		this.hideSelectOptionsBox();
+		const option = this.options.find((option) => option.value === this.value.rawValue);
+		this.textView.inputElement.value = option ? option.label : '';
 	}
 
 	private onValueChange_() {
-		this.update();
+		this.refresh();
 	}
 }
