@@ -20,7 +20,7 @@ export class PluginView implements View {
 	public readonly selectBox: HTMLDivElement;
 	public readonly optionsUl: HTMLUListElement;
 	public readonly popper: Instance;
-	public readonly value: Value<string>;
+	public readonly value: Value<Option<string> | null>;
 	public textView: TextView<string>;
 	private options: Option<string>[] = [];
 	private noDataText: string;
@@ -64,7 +64,7 @@ export class PluginView implements View {
 			if (e.target && e.target instanceof HTMLLIElement) {
 				const value = e.target.getAttribute('data-value');
 				if (value !== null) {
-					const option = config.options.find((o) => o.value === value);
+					const option = config.options.find((option) => option.value == value);
 					if (option) config.onOptionClick(option);
 				}
 			}
@@ -137,11 +137,19 @@ export class PluginView implements View {
 
 	public refresh(): void {
 		this.hideSelectOptionsBox();
-		const option = this.options.find((option) => option.value === this.value.rawValue);
+		const option = this.options.find((option) => option.value == this.value.rawValue?.value);
 		this.textView.inputElement.value = option ? option.label : '';
 	}
 
 	private onValueChange_() {
 		this.refresh();
+	}
+
+	public changeDraggingState(state: boolean) {
+		console.log('changeDraggingState', state);
+		if (state) this.textView.element.classList.add(className('dragging_area'));
+		else {
+			this.textView.element.classList.remove(className('dragging_area'));
+		}
 	}
 }

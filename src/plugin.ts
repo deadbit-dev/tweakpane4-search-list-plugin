@@ -24,16 +24,12 @@ interface PluginInputParams extends StringInputParams {
 // - converts `Ex` into `In` and holds it
 // - P is the type of the parsed parameters
 //
-export const TemplateInputPlugin: InputBindingPlugin<
-	string,
+export const SearchListInputPlugin: InputBindingPlugin<
+	Option<string> | null,
 	string,
 	PluginInputParams
 > = createPlugin({
-	id: 'input-template',
-
-	// type: The plugin type.
-	// - 'input': Input binding
-	// - 'monitor': Monitor binding
+	id: 'input-search-list',
 	type: 'input',
 
 	accept(exValue: unknown, params: Record<string, unknown>) {
@@ -42,16 +38,17 @@ export const TemplateInputPlugin: InputBindingPlugin<
 
 		// Return a typed value and params to accept the user input
 		return {
-			initialValue: exValue as string,
+			initialValue: exValue,
 			params,
 		};
 	},
 
 	binding: {
 		reader(_args) {
-			return (exValue: unknown): string => {
-				// Convert an external unknown value into the internal value
-				return typeof exValue === 'string' ? exValue : '';
+			return (exValue: unknown): Option<string> | null => {
+				// Convert an external string value into the internal Option value
+				if (typeof exValue !== 'string') return null;
+				return { label: exValue, value: exValue };
 			};
 		},
 
@@ -61,16 +58,22 @@ export const TemplateInputPlugin: InputBindingPlugin<
 			// You can reuse existing functions of the default plugins
 			const cr = createListConstraint<string>(args.params.options);
 			if (cr) {
-				constraints.push(cr);
+				constraints.push({
+					constrain: (value: Option<string> | null) => {
+						if (!value) return null;
+						const constrainedLable = cr.constrain(value.label);
+						const constrainedValue = cr.constrain(value.value);
+						return { label: constrainedLable, value: constrainedValue };
+					}
+				});
 			}
-			return new CompositeConstraint<string>(constraints);
+			return new CompositeConstraint<Option<string> | null>(constraints);
 		},
 
 		writer(_args) {
-			return (target: BindingTarget, inValue) => {
-				// Use `target.write()` to write the primitive value to the target,
-				// or `target.writeProperty()` to write a property of the target
-				target.write(inValue);
+			return (target: BindingTarget, inValue: Option<string> | null) => {
+				// Write the value property of the option to the target
+				target.write(inValue?.value ?? '');
 			};
 		},
 	},
@@ -84,6 +87,7 @@ export const TemplateInputPlugin: InputBindingPlugin<
 				value: optionsFromParams[key as keyof StringInputParams],
 			} as Option<string>;
 		});
+
 		// Create a controller for the plugin
 		return new PluginController(args.document, {
 			value: args.value,

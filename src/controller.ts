@@ -6,7 +6,7 @@ import { PluginView } from './view.js';
 
 // Custom controller class should implement `Controller` interface
 export class PluginController implements Controller<PluginView> {
-	public readonly value: Value<string>;
+	public readonly value: Value<Option<string> | null>;
 	public readonly textValue: Value<string>;
 	public readonly options: Option<string>[];
 	public readonly debounceFilterOptions: ReturnType<typeof debounce>;
@@ -25,11 +25,16 @@ export class PluginController implements Controller<PluginView> {
 		);
 
 		const selectedOption = config.options.find(
-			(o) => o.value === config.value.rawValue,
+			(option) => option.value == config.value.rawValue?.value,
 		);
+
 		if (selectedOption) {
 			this.textValue.rawValue = selectedOption.label;
 		}
+
+		this.onDrop = this.onDrop.bind(this);
+		this.onDragOver = this.onDragOver.bind(this);
+		this.onDragLeave = this.onDragLeave.bind(this);
 
 		const textView = new TextView<string>(doc, {
 			props: config.textProps,
@@ -49,7 +54,20 @@ export class PluginController implements Controller<PluginView> {
 			onOptionClick: this.onOptionClick.bind(this),
 		});
 
-		config.viewProps.handleDispose(() => {
+		this.view.element.addEventListener('drop', this.onDrop);
+		this.view.element.addEventListener('dragover', this.onDragOver);
+		this.view.element.addEventListener('dragleave', this.onDragLeave);
+
+		this.viewProps.handleDispose(() => {
+			this.view.element.removeEventListener('drop', this.onDrop);
+			this.view.element.removeEventListener('dragover', this.onDragOver);
+			this.view.element.removeEventListener('dragleave', this.onDragLeave);
+		});
+
+		this.viewProps.handleDispose(() => {
+			this.view.element.removeEventListener('drop', this.onDrop);
+			this.view.element.removeEventListener('dragover', this.onDragOver);
+			this.view.element.removeEventListener('dragleave', this.onDragLeave);
 			// cancel debounce action
 			this.debounceFilterOptions.cancel();
 		});
@@ -68,8 +86,55 @@ export class PluginController implements Controller<PluginView> {
 		this.debounceFilterOptions(value);
 	}
 
-	private onOptionClick(option: Option<string>) {
-		this.value.rawValue = option.value;
-		this.textValue.rawValue = option.label;
+	private onOptionClick(option: Option<string> | null) {
+		this.setValue(option);
+	}
+
+	private setValue(option: Option<string> | null) {
+		this.value.setRawValue(option);
+		this.textValue.rawValue = option ? option.value : '';
+	}
+
+	private onDrop(event: DragEvent) {
+		event.preventDefault();
+		const value = this.getValueFromDrag(event);
+		const option: Option<string> | null = this.getOptionFromValue(value);
+		this.setValue(option);
+		this.view.changeDraggingState(false);
+		this.view.hideSelectOptionsBox();
+	}
+
+	private getValueFromDrag(event: DragEvent): string {
+		const dataTransfer = event.dataTransfer;
+		if (!dataTransfer)
+			return '';
+		return dataTransfer.getData('text/plain');
+	}
+
+	private getOptionFromValue(value: string): Option<string> | null {
+		if (value == '')
+			return null;
+
+		const index = this.options.findIndex((option) => {
+			return option.value == value;
+		});
+
+		if (index == -1)
+			return null;
+
+		return this.options[index];
+	}
+
+	private onDragOver(event: DragEvent) {
+		event.preventDefault();
+		this.view.changeDraggingState(true);
+
+		// if (this.getThumbnailFromUrl(this.getUrlFromDrag(event)) == null) {
+		// 	this.view.setDraggingError();
+		// }
+	}
+
+	private onDragLeave() {
+		this.view.changeDraggingState(false);
 	}
 }

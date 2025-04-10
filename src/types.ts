@@ -6,7 +6,7 @@ export interface Option<Value> {
 }
 
 export interface PluginConfig {
-	value: Value<string>;
+	value: Value<Option<string> | null>;
 	textValue: Value<string>;
 	options: Option<string>[];
 	noDataText: string;

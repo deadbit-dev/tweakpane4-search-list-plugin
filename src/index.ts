@@ -1,6 +1,6 @@
 import type { TpPlugin } from 'tweakpane';
-import { TemplateInputPlugin } from './plugin.js';
+import { SearchListInputPlugin } from './plugin.js';
 
-export const id = 'input-template';
+export const id = 'input-search-list';
 export const css = '__css__';
-export const plugins: TpPlugin[] = [TemplateInputPlugin];
+export const plugins: TpPlugin[] = [SearchListInputPlugin];

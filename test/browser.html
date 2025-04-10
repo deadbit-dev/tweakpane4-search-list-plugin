@@ -17,25 +17,62 @@
 
 		pane.addBinding({ test: 'test' }, 'test', {
 			view: 'search-list',
+			noDataText: 'Не найдено',
 			options: {
 				test: 'test',
-				test_2: 'test-2',
-				test_3: 'test-3',
-				test_4: 'test-4',
-				test_5: 'test-5',
-				test_6: 'test-6'
+				test_1: 'test_1',
+				'test-2': 'test-2',
+				'test-3': 'test-3',
+				'test-4': 'test-4',
+				'test-5': 'test-5',
+				'test-6': 'test-6'
 			}
 		});
 		pane.addBinding({ num: 5 }, 'num');
 
 		window.pane = pane;
-	</script>
-</body>
 
-<style>
-	body {
-		background-color: rgb(40, 36, 41);
-	}
-</style>
+		const files = document.querySelectorAll("#file");
+		files.forEach((file) => {
+			file.addEventListener("dragstart", (event) => {
+				event.dataTransfer.clearData();
+				event.dataTransfer.setData("text/plain", file.getAttribute("data-value"));
+			});
+		});
+	</script>
+	<style>
+		* {
+			font-family: monospace;
+		}
+
+		body {
+			background-color: rgb(40, 36, 41);
+		}
+
+		:root {
+			--tp-plugin-search-list-dragging-color: lightgreen;
+		}
+
+		#file-container {
+			display: flex;
+			justify-content: center;
+			margin-top: 650px;
+		}
+
+		#file {
+			width: 100px;
+			height: 100px;
+			margin: 5px;
+		}
+	</style>
+	<div id="file-container">
+		<img id="file" data-value="test"
+			src="https://images.freeimages.com/image/previews/b48/nature-stroke-png-design-5690476.png?fmt=webp&w=500">
+		<img id="file" data-value="test_1"
+			src="https://images.freeimages.com/image/previews/50b/japanese-bonsai-nature-hand-png-5692400.png?fmt=webp&w=500">
+		<img id="file" data-value="test_2"
+			src="https://images.freeimages.com/image/previews/d15/fallen-faces-halloween-png-5691343.png?fmt=webp&w=500">
+	</div>
+</body>
 
 </html>

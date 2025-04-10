@@ -51,4 +51,11 @@
 
 		color: var(--button-foreground-color);
 	}
+
+	&_dragging_area {
+		// background-color: var(--tp-plugin-search-list-dragging-color);
+		border: 2px dashed var(--tp-plugin-search-list-dragging-color);
+		border-radius: 4px;
+		opacity: 0.6;
+	}
 }
