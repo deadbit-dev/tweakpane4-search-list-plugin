@@ -92,7 +92,7 @@ export class PluginController implements Controller<PluginView> {
 
 	private setValue(option: Option<string> | null) {
 		this.value.setRawValue(option);
-		this.textValue.rawValue = option ? option.value : '';
+		this.textValue.rawValue = option ? option.label : '';
 	}
 
 	private onDrop(event: DragEvent) {

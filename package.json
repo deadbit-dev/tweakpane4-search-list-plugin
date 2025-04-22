@@ -1,6 +1,6 @@
 {
   "name": "tweakpane4-search-list-plugin",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Searchable select list plugin for Tweakpane",
   "main": "dist/tweakpane4-search-list-plugin.min.js",
   "type": "module",
