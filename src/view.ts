@@ -48,7 +48,6 @@ export class PluginView implements View {
 
 		const arrowEl = doc.createElement('div');
 		arrowEl.classList.add(className('m'));
-		arrowEl.innerHTML = '<svg><path d="M5 7h6l-3 3 z"></path></svg>';
 		this.element.appendChild(arrowEl);
 
 		// select options area
@@ -131,6 +130,9 @@ export class PluginView implements View {
 			const optionEl = this.doc.createElement('li');
 			optionEl.innerText = option.label;
 			optionEl.setAttribute('data-value', option.value);
+			if (option.value === this.value.rawValue?.value) {
+				optionEl.classList.add('selected');
+			}
 			this.optionsUl.appendChild(optionEl);
 		});
 	}
@@ -139,6 +141,15 @@ export class PluginView implements View {
 		this.hideSelectOptionsBox();
 		const option = this.options.find((option) => option.value == this.value.rawValue?.value);
 		this.textView.inputElement.value = option ? option.label : '';
+
+		// Update selected class for all options
+		const options = this.optionsUl.querySelectorAll('li');
+		options.forEach((el) => {
+			el.classList.remove('selected');
+			if (el.getAttribute('data-value') === this.value.rawValue?.value) {
+				el.classList.add('selected');
+			}
+		});
 	}
 
 	private onValueChange_() {
